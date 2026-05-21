@@ -24,7 +24,16 @@
       wp_nav_menu([
           'theme_location' => 'primary',
           'container'      => false,
-          'fallback_cb'    => false,
+          'fallback_cb'    => function () {
+              echo '<ul>';
+              echo '<li><a href="' . esc_url(home_url('/')) . '">Home</a></li>';
+              echo '<li><a href="' . esc_url(home_url('/quem-somos')) . '">Quem Somos</a></li>';
+              echo '<li><a href="' . esc_url(get_post_type_archive_link('ministerio')) . '">Ministérios</a></li>';
+              echo '<li><a href="' . esc_url(get_post_type_archive_link('evento')) . '">Eventos</a></li>';
+              echo '<li><a href="' . esc_url(get_post_type_archive_link('mensagem')) . '">Mensagens</a></li>';
+              echo '<li><a href="' . esc_url(home_url('/contato')) . '">Contato</a></li>';
+              echo '</ul>';
+          },
       ]);
       ?>
     </nav>

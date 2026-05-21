@@ -6,15 +6,14 @@ if (! defined('ABSPATH')) {
 get_header();
 ?>
 <main class="site-main">
-  <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-    <section class="section">
-      <div class="container">
-        <h1 class="section-title"><?php the_title(); ?></h1>
-        <div class="content-area">
-          <?php the_content(); ?>
-        </div>
+  <section class="section">
+    <div class="container">
+      <span class="mini-meta">Página</span>
+      <h1 class="section-title"><?php the_title(); ?></h1>
+      <div class="content-area">
+        <?php if (have_posts()) : while (have_posts()) : the_post(); the_content(); endwhile; endif; ?>
       </div>
-    </section>
-  <?php endwhile; endif; ?>
+    </div>
+  </section>
 </main>
 <?php get_footer(); ?>

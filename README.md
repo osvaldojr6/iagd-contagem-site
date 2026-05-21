@@ -2,28 +2,52 @@
 
 Tema WordPress customizado para a **Igreja Apostólica da Graça Contagem**.
 
+## Recursos atuais
+- Tema em PHP, CSS e JavaScript puro
+- Home profissionalizada
+- Paleta branco, amarelo e preto
+- Menu principal
+- Hero com destaques
+- Áreas de conexão da igreja
+- Seções de ministérios, eventos, mensagens, contato e contribuição
+- Custom Post Types:
+  - `ministerio`
+  - `evento`
+  - `mensagem`
+- Campos básicos no Personalizador do WordPress
+
 ## Estrutura
 - `wp-content/themes/iagd-contagem/`
-- Tema com PHP, CSS e JS puro
-- Paleta: branco, amarelo e preto
+- `style.css`
+- `functions.php`
+- `header.php`
+- `footer.php`
+- `front-page.php`
+- `page.php`
+- `single.php`
+- `archive.php`
+- `archive-ministerio.php`
+- `archive-evento.php`
+- `archive-mensagem.php`
+- `assets/js/main.js`
 
-## Próximos passos
-1. Instalar WordPress no servidor/hospedagem.
-2. Copiar a pasta do tema para `wp-content/themes/`.
-3. Ativar o tema no painel WordPress.
-4. Configurar menus em **Aparência > Menus**.
-5. Configurar dados da igreja em **Aparência > Personalizar**.
-6. Definir uma página inicial estática usando a Home.
+## Como usar
+1. Instale o WordPress.
+2. Coloque a pasta `wp-content/themes/iagd-contagem/` no projeto.
+3. Ative o tema no painel.
+4. Vá em **Aparência > Personalizar** para preencher dados da igreja.
+5. Vá em **Configurações > Leitura** e defina uma página inicial estática se desejar.
+6. Cadastre conteúdos nos tipos personalizados:
+   - Ministérios
+   - Eventos
+   - Mensagens
 
-## Sugestão de páginas no WordPress
-- Home
-- Quem Somos
-- Cultos
-- Ministérios
-- Mensagens
-- Eventos
-- Contato
-- Doações
-
-## Observação
-Este repositório contém a base inicial do tema. Podemos evoluir com templates internos, custom post types, formulários reais, integração com YouTube, eventos e páginas adicionais.
+## Próximas evoluções sugeridas
+- templates específicos de contato e doações
+- campos personalizados com ACF
+- integração com formulário real
+- banner rotativo
+- área de transmissão ao vivo embutida
+- mapa com Google Maps
+- WhatsApp flutuante
+- SEO técnico e schema
