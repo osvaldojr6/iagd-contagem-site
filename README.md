@@ -2,62 +2,38 @@
 
 Tema WordPress customizado para a **Igreja Apostólica da Graça Contagem**.
 
-## Fase 3 concluída
-### Recursos implementados
-- Home mais completa e profissional
-- Templates específicos:
-  - Contato
-  - Doações
-  - Quem Somos
-  - Cultos
-- Botão flutuante de WhatsApp
-- Campos adicionais no personalizador:
-  - mapa embed
-  - CNPJ
-  - URL primeira visita
-  - texto de doações
-- Meta boxes para conteúdo dinâmico
+## Melhorias implementadas
+- ajustes visuais e estruturais
+- área de transmissão com embed
+- texto complementar do logo no cabeçalho
+- novo tipo de conteúdo `celula`
+- organograma hierárquico de células
+- meta box para célula com líder, encontro e região
+- navegação atualizada com link para Células
 
-### Custom Post Types
-- `ministerio`
-- `evento`
-- `mensagem`
+## Organograma de células
+O tipo de conteúdo **Células** é hierárquico.
 
-### Campos por tipo de conteúdo
-#### Evento
-- data
-- horário
-- local
-- link de inscrição
+### Como cadastrar níveis
+1. Crie uma célula principal.
+2. Crie outra célula e selecione a principal como **Pai**.
+3. Para um terceiro nível, crie outra célula e escolha a célula filha como **Pai**.
 
-#### Mensagem
-- pregador
-- série
-- URL do vídeo
+Exemplo:
+- Pai
+  - Filho
+    - Neto
 
-#### Ministério
-- líder
-- horário/encontro
-- contato
+O organograma será exibido automaticamente na página de arquivo de células.
 
-## Como usar
-1. Instale o WordPress.
-2. Coloque a pasta `wp-content/themes/iagd-contagem/` no projeto.
-3. Ative o tema no painel.
-4. Vá em **Aparência > Personalizar** para preencher dados da igreja.
-5. Crie páginas como:
-   - Quem Somos
-   - Cultos
-   - Contato
-   - Doações
-6. Atribua os templates correspondentes em cada página.
-7. Cadastre conteúdos em Ministérios, Eventos e Mensagens.
-
-## Próximas melhorias sugeridas
-- formulário funcional com plugin
-- SEO técnico
-- integração real com YouTube embed
-- slider/banner editável
-- área administrativa mais rica com ACF
-- página Primeira Visita
-- páginas Batismo, Seja Membro e Voluntariado
+## Recursos já disponíveis
+- Home completa
+- templates de Contato, Doações, Quem Somos e Cultos
+- botão flutuante de WhatsApp
+- custom post types:
+  - ministerio
+  - evento
+  - mensagem
+  - celula
+- meta boxes por conteúdo
+- página de organograma de células

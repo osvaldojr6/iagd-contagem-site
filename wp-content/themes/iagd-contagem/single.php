@@ -34,6 +34,15 @@ get_header();
             <div><strong>Encontro:</strong> <?php echo esc_html(get_post_meta(get_the_ID(), '_iagd_ministry_schedule', true)); ?></div>
             <div><strong>Contato:</strong> <?php echo esc_html(get_post_meta(get_the_ID(), '_iagd_ministry_contact', true)); ?></div>
           </div>
+        <?php elseif ($type === 'celula') : ?>
+          <div class="meta-list">
+            <div><strong>Líder:</strong> <?php echo esc_html(get_post_meta(get_the_ID(), '_iagd_celula_lider', true)); ?></div>
+            <div><strong>Encontro:</strong> <?php echo esc_html(get_post_meta(get_the_ID(), '_iagd_celula_encontro', true)); ?></div>
+            <div><strong>Região:</strong> <?php echo esc_html(get_post_meta(get_the_ID(), '_iagd_celula_endereco', true)); ?></div>
+            <?php if (wp_get_post_parent_id(get_the_ID())) : ?>
+              <div><strong>Célula Pai:</strong> <?php echo esc_html(get_the_title(wp_get_post_parent_id(get_the_ID()))); ?></div>
+            <?php endif; ?>
+          </div>
         <?php endif; ?>
         <?php if (has_post_thumbnail()) : ?>
           <div style="margin:24px 0; border-radius:20px; overflow:hidden;">
@@ -43,6 +52,12 @@ get_header();
         <div class="content-area">
           <?php the_content(); ?>
         </div>
+        <?php if ($type === 'celula') : ?>
+          <div style="margin-top:32px;" class="card">
+            <h2>Ramificações desta célula</h2>
+            <?php echo iagd_contagem_render_celula_tree(get_the_ID()); ?>
+          </div>
+        <?php endif; ?>
       <?php endwhile; endif; ?>
     </div>
   </section>

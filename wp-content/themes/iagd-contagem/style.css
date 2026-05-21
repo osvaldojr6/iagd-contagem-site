@@ -3,7 +3,7 @@ Theme Name: IAGD Contagem
 Theme URI: https://github.com/osvaldojr6/iagd-contagem-site
 Author: OpenAI
 Description: Tema WordPress customizado para Igreja Apostólica da Graça Contagem.
-Version: 3.0.0
+Version: 4.0.0
 Text Domain: iagd-contagem
 */
 
@@ -80,6 +80,19 @@ iframe { max-width: 100%; }
 .embed-box iframe { width: 100%; min-height: 320px; border: 0; border-radius: 20px; }
 .whatsapp-float { position: fixed; right: 20px; bottom: 20px; z-index: 999; background: #25d366; color: #fff; padding: 14px 18px; border-radius: 999px; box-shadow: var(--shadow); font-weight: 700; }
 .meta-list { display: grid; gap: 10px; margin: 18px 0 0; }
+.org-tree, .org-tree ul { list-style: none; margin: 0; padding: 0; }
+.org-tree { display: flex; justify-content: center; overflow-x: auto; padding: 24px 12px; }
+.org-tree li { text-align: center; position: relative; padding: 20px 12px 0 12px; }
+.org-tree li::before, .org-tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #d8d8d8; width: 50%; height: 20px; }
+.org-tree li::after { right: auto; left: 50%; border-left: 2px solid #d8d8d8; }
+.org-tree li:only-child::before, .org-tree li:only-child::after { display: none; }
+.org-tree li:only-child { padding-top: 0; }
+.org-tree li:first-child::before, .org-tree li:last-child::after { border: 0 none; }
+.org-tree li:last-child::before { border-right: 2px solid #d8d8d8; border-radius: 0 8px 0 0; }
+.org-tree li:first-child::after { border-radius: 8px 0 0 0; }
+.org-tree ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid #d8d8d8; width: 0; height: 20px; }
+.org-tree ul { display: flex; justify-content: center; position: relative; padding-top: 20px; }
+.org-card { min-width: 240px; background: #fff; border: 1px solid #ebebeb; border-radius: 18px; padding: 20px; box-shadow: var(--shadow); }
 @media (max-width: 980px) {
   .hero-grid, .grid-2, .grid-3, .grid-4, .archive-list, .footer-grid { grid-template-columns: 1fr; }
   .main-navigation { display: none; width: 100%; }
@@ -88,4 +101,7 @@ iframe { max-width: 100%; }
   .menu-toggle { display: inline-flex; }
   .header-inner { flex-wrap: wrap; padding: 10px 0; }
   .whatsapp-float { right: 14px; bottom: 14px; }
+  .org-tree, .org-tree ul { display: block; }
+  .org-tree li::before, .org-tree li::after, .org-tree ul::before { display: none; }
+  .org-card { margin: 0 auto 16px; }
 }

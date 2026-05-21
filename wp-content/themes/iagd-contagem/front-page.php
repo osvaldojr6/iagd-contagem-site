@@ -55,7 +55,7 @@ get_header();
       <h2 class="section-title">Encontre seu lugar na igreja</h2>
       <p class="section-subtitle">Participe dos nossos grupos, ministérios e próximos passos de fé.</p>
       <div class="grid grid-4">
-        <div class="card"><h3>Grupos</h3><p>Pequenos grupos para comunhão, discipulado e cuidado pastoral.</p></div>
+        <div class="card"><h3>Células</h3><p>Relacionamento, discipulado e crescimento através da estrutura em células.</p><a class="btn btn-dark" href="<?php echo esc_url(get_post_type_archive_link('celula')); ?>">Ver organograma</a></div>
         <div class="card"><h3>Batismo</h3><p>Assuma publicamente sua fé em Jesus e celebre esse novo tempo.</p></div>
         <div class="card"><h3>Seja membro</h3><p>Conheça nossa visão e faça parte oficialmente da família da fé.</p></div>
         <div class="card"><h3>Voluntariado</h3><p>Sirva com seus dons e talentos nas áreas da igreja.</p></div>
@@ -69,8 +69,7 @@ get_header();
       <h2 class="section-title">Cuidado e serviço para todas as fases da vida</h2>
       <p class="section-subtitle">Conheça alguns dos ministérios que fortalecem a vida da igreja.</p>
       <div class="grid grid-3 posts-grid">
-        <?php
-        $ministerios = new WP_Query(['post_type' => 'ministerio', 'posts_per_page' => 3]);
+        <?php $ministerios = new WP_Query(['post_type' => 'ministerio', 'posts_per_page' => 3]);
         if ($ministerios->have_posts()) : while ($ministerios->have_posts()) : $ministerios->the_post(); ?>
           <article class="card">
             <h3><?php the_title(); ?></h3>
@@ -129,11 +128,10 @@ get_header();
 
   <section class="section section-light">
     <div class="container">
-      <span class="mini-meta">Assista</span>
-      <h2 class="section-title">Transmissão ao vivo</h2>
-      <div class="card">
-        <p>Use o botão de transmissão ao vivo no topo ou configure a URL no personalizador.</p>
-        <a class="btn btn-primary" href="<?php echo esc_url(iagd_contagem_get_option('church_live_url', '#')); ?>">Abrir transmissão</a>
+      <span class="mini-meta">Transmissão</span>
+      <h2 class="section-title">Assista online</h2>
+      <div class="card embed-box">
+        <?php echo wp_kses_post(iagd_contagem_get_option('church_youtube_embed', '<p>Adicione o iframe da transmissão no personalizador.</p>')); ?>
       </div>
     </div>
   </section>

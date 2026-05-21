@@ -18,8 +18,8 @@ function iagd_contagem_setup() {
 add_action('after_setup_theme', 'iagd_contagem_setup');
 
 function iagd_contagem_assets() {
-    wp_enqueue_style('iagd-contagem-style', get_stylesheet_uri(), [], '3.0.0');
-    wp_enqueue_script('iagd-contagem-script', get_template_directory_uri() . '/assets/js/main.js', [], '3.0.0', true);
+    wp_enqueue_style('iagd-contagem-style', get_stylesheet_uri(), [], '4.0.0');
+    wp_enqueue_script('iagd-contagem-script', get_template_directory_uri() . '/assets/js/main.js', [], '4.0.0', true);
 }
 add_action('wp_enqueue_scripts', 'iagd_contagem_assets');
 
@@ -46,6 +46,8 @@ function iagd_contagem_customize_register($wp_customize) {
         'church_cnpj' => 'CNPJ',
         'church_first_visit_url' => 'URL Primeira Visita',
         'church_donation_text' => 'Texto de doações',
+        'church_logo_text' => 'Texto complementar do logo',
+        'church_youtube_embed' => 'Embed da transmissão (iframe)',
     ];
 
     foreach ($settings as $key => $label) {
@@ -107,6 +109,20 @@ function iagd_contagem_register_post_types() {
         'supports' => ['title', 'editor', 'thumbnail', 'excerpt'],
         'show_in_rest' => true,
     ]);
+
+    register_post_type('celula', [
+        'labels' => [
+            'name' => __('Células', 'iagd-contagem'),
+            'singular_name' => __('Célula', 'iagd-contagem'),
+        ],
+        'public' => true,
+        'has_archive' => true,
+        'menu_icon' => 'dashicons-networking',
+        'rewrite' => ['slug' => 'celulas'],
+        'supports' => ['title', 'editor', 'thumbnail', 'excerpt', 'page-attributes'],
+        'show_in_rest' => true,
+        'hierarchical' => true,
+    ]);
 }
 add_action('init', 'iagd_contagem_register_post_types');
 
@@ -114,6 +130,7 @@ function iagd_contagem_register_meta_boxes() {
     add_meta_box('iagd_evento_meta', __('Detalhes do Evento', 'iagd-contagem'), 'iagd_contagem_evento_meta_box', 'evento', 'normal', 'high');
     add_meta_box('iagd_mensagem_meta', __('Detalhes da Mensagem', 'iagd-contagem'), 'iagd_contagem_mensagem_meta_box', 'mensagem', 'normal', 'high');
     add_meta_box('iagd_ministerio_meta', __('Detalhes do Ministério', 'iagd-contagem'), 'iagd_contagem_ministerio_meta_box', 'ministerio', 'normal', 'high');
+    add_meta_box('iagd_celula_meta', __('Detalhes da Célula', 'iagd-contagem'), 'iagd_contagem_celula_meta_box', 'celula', 'normal', 'high');
 }
 add_action('add_meta_boxes', 'iagd_contagem_register_meta_boxes');
 
@@ -149,6 +166,17 @@ function iagd_contagem_ministerio_meta_box($post) {
     echo '<p><label>Contato</label><br><input type="text" name="iagd_ministry_contact" value="' . esc_attr($contact) . '" style="width:100%"></p>';
 }
 
+function iagd_contagem_celula_meta_box($post) {
+    wp_nonce_field('iagd_save_celula_meta', 'iagd_celula_nonce');
+    $leader = get_post_meta($post->ID, '_iagd_celula_lider', true);
+    $meeting = get_post_meta($post->ID, '_iagd_celula_encontro', true);
+    $address = get_post_meta($post->ID, '_iagd_celula_endereco', true);
+    echo '<p><label>Líder da célula</label><br><input type="text" name="iagd_celula_lider" value="' . esc_attr($leader) . '" style="width:100%"></p>';
+    echo '<p><label>Dia/Horário do encontro</label><br><input type="text" name="iagd_celula_encontro" value="' . esc_attr($meeting) . '" style="width:100%"></p>';
+    echo '<p><label>Endereço / Região</label><br><input type="text" name="iagd_celula_endereco" value="' . esc_attr($address) . '" style="width:100%"></p>';
+    echo '<p>Use o campo <strong>Atributos da página > Pai</strong> para montar o organograma em níveis como pai, filho e neto.</p>';
+}
+
 function iagd_contagem_save_meta($post_id) {
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
@@ -172,5 +200,51 @@ function iagd_contagem_save_meta($post_id) {
         update_post_meta($post_id, '_iagd_ministry_schedule', sanitize_text_field($_POST['iagd_ministry_schedule'] ?? ''));
         update_post_meta($post_id, '_iagd_ministry_contact', sanitize_text_field($_POST['iagd_ministry_contact'] ?? ''));
     }
+
+    if (isset($_POST['iagd_celula_nonce']) && wp_verify_nonce($_POST['iagd_celula_nonce'], 'iagd_save_celula_meta')) {
+        update_post_meta($post_id, '_iagd_celula_lider', sanitize_text_field($_POST['iagd_celula_lider'] ?? ''));
+        update_post_meta($post_id, '_iagd_celula_encontro', sanitize_text_field($_POST['iagd_celula_encontro'] ?? ''));
+        update_post_meta($post_id, '_iagd_celula_endereco', sanitize_text_field($_POST['iagd_celula_endereco'] ?? ''));
+    }
 }
 add_action('save_post', 'iagd_contagem_save_meta');
+
+function iagd_contagem_render_celula_tree($parent_id = 0) {
+    $items = get_posts([
+        'post_type' => 'celula',
+        'posts_per_page' => -1,
+        'post_parent' => $parent_id,
+        'orderby' => 'menu_order title',
+        'order' => 'ASC',
+    ]);
+
+    if (! $items) {
+        return '';
+    }
+
+    $html = '<ul class="org-tree">';
+    foreach ($items as $item) {
+        $leader = get_post_meta($item->ID, '_iagd_celula_lider', true);
+        $meeting = get_post_meta($item->ID, '_iagd_celula_encontro', true);
+        $address = get_post_meta($item->ID, '_iagd_celula_endereco', true);
+        $html .= '<li>';
+        $html .= '<div class="org-card">';
+        $html .= '<h3>' . esc_html(get_the_title($item)) . '</h3>';
+        if ($leader) {
+            $html .= '<p><strong>Líder:</strong> ' . esc_html($leader) . '</p>';
+        }
+        if ($meeting) {
+            $html .= '<p><strong>Encontro:</strong> ' . esc_html($meeting) . '</p>';
+        }
+        if ($address) {
+            $html .= '<p><strong>Região:</strong> ' . esc_html($address) . '</p>';
+        }
+        $html .= '<p><a class="btn btn-dark" href="' . esc_url(get_permalink($item)) . '">Ver célula</a></p>';
+        $html .= '</div>';
+        $html .= iagd_contagem_render_celula_tree($item->ID);
+        $html .= '</li>';
+    }
+    $html .= '</ul>';
+
+    return $html;
+}
