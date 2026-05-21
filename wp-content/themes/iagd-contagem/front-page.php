@@ -5,6 +5,7 @@ if (! defined('ABSPATH')) {
 
 $hero_text = iagd_contagem_get_option('church_hero_text', 'Um lugar para conhecer Jesus, crescer em fé e viver em família.');
 $hero_subtext = iagd_contagem_get_option('church_hero_subtext', 'Cultos presenciais, comunhão, discipulado, ministérios e uma comunidade pronta para receber você em Contagem.');
+$first_visit = iagd_contagem_get_option('church_first_visit_url', '#contato');
 
 get_header();
 ?>
@@ -17,7 +18,7 @@ get_header();
         <p><?php echo esc_html($hero_subtext); ?></p>
         <div style="display:flex; gap:12px; flex-wrap:wrap;">
           <a class="btn btn-primary" href="<?php echo esc_url(iagd_contagem_get_option('church_live_url', '#')); ?>">Assistir transmissão</a>
-          <a class="btn btn-secondary" href="#contato">Venha nos visitar</a>
+          <a class="btn btn-secondary" href="<?php echo esc_url($first_visit); ?>">Primeira visita</a>
         </div>
       </div>
       <div class="hero-card">
@@ -41,18 +42,9 @@ get_header();
       <h2 class="section-title">Uma igreja para acolher, discipular e enviar</h2>
       <p class="section-subtitle">Nossa missão é anunciar o evangelho com fidelidade bíblica, formar discípulos de Jesus e servir a cidade de Contagem com amor, graça e excelência.</p>
       <div class="grid grid-3">
-        <div class="card">
-          <h3>Missão</h3>
-          <p>Conduzir pessoas a um relacionamento real com Cristo e à maturidade espiritual por meio da Palavra, comunhão e serviço.</p>
-        </div>
-        <div class="card">
-          <h3>Visão</h3>
-          <p>Ser uma igreja viva, relevante e comprometida com o Reino de Deus em Contagem e além.</p>
-        </div>
-        <div class="card">
-          <h3>Valores</h3>
-          <p>Fé, santidade, acolhimento, discipulado, família, excelência e compaixão.</p>
-        </div>
+        <div class="card"><h3>Missão</h3><p>Conduzir pessoas a um relacionamento real com Cristo e à maturidade espiritual por meio da Palavra, comunhão e serviço.</p></div>
+        <div class="card"><h3>Visão</h3><p>Ser uma igreja viva, relevante e comprometida com o Reino de Deus em Contagem e além.</p></div>
+        <div class="card"><h3>Valores</h3><p>Fé, santidade, acolhimento, discipulado, família, excelência e compaixão.</p></div>
       </div>
     </div>
   </section>
@@ -78,20 +70,14 @@ get_header();
       <p class="section-subtitle">Conheça alguns dos ministérios que fortalecem a vida da igreja.</p>
       <div class="grid grid-3 posts-grid">
         <?php
-        $ministerios = new WP_Query([
-            'post_type' => 'ministerio',
-            'posts_per_page' => 3,
-        ]);
-        if ($ministerios->have_posts()) :
-            while ($ministerios->have_posts()) : $ministerios->the_post(); ?>
-              <article class="card">
-                <h3><?php the_title(); ?></h3>
-                <p><?php echo esc_html(get_the_excerpt() ?: wp_trim_words(get_the_content(), 20)); ?></p>
-                <a class="btn btn-primary" href="<?php the_permalink(); ?>">Saiba mais</a>
-              </article>
-            <?php endwhile;
-            wp_reset_postdata();
-        else : ?>
+        $ministerios = new WP_Query(['post_type' => 'ministerio', 'posts_per_page' => 3]);
+        if ($ministerios->have_posts()) : while ($ministerios->have_posts()) : $ministerios->the_post(); ?>
+          <article class="card">
+            <h3><?php the_title(); ?></h3>
+            <p><?php echo esc_html(get_the_excerpt() ?: wp_trim_words(get_the_content(), 20)); ?></p>
+            <a class="btn btn-primary" href="<?php the_permalink(); ?>">Saiba mais</a>
+          </article>
+        <?php endwhile; wp_reset_postdata(); else : ?>
           <div class="card"><h3>Infantil</h3><p>Ensino bíblico com amor e cuidado para as crianças.</p></div>
           <div class="card"><h3>Jovens</h3><p>Comunhão, identidade e propósito para a nova geração.</p></div>
           <div class="card"><h3>Louvor</h3><p>Um ministério de adoração com excelência e sensibilidade espiritual.</p></div>
@@ -108,21 +94,14 @@ get_header();
         <div>
           <h3>Próximos eventos</h3>
           <div class="grid">
-            <?php
-            $eventos = new WP_Query([
-                'post_type' => 'evento',
-                'posts_per_page' => 2,
-            ]);
-            if ($eventos->have_posts()) :
-                while ($eventos->have_posts()) : $eventos->the_post(); ?>
-                  <article class="card">
-                    <h3><?php the_title(); ?></h3>
-                    <p><?php echo esc_html(get_the_excerpt() ?: wp_trim_words(get_the_content(), 18)); ?></p>
-                    <a class="btn btn-dark" href="<?php the_permalink(); ?>">Ver evento</a>
-                  </article>
-                <?php endwhile;
-                wp_reset_postdata();
-            else : ?>
+            <?php $eventos = new WP_Query(['post_type' => 'evento', 'posts_per_page' => 2]);
+            if ($eventos->have_posts()) : while ($eventos->have_posts()) : $eventos->the_post(); ?>
+              <article class="card">
+                <h3><?php the_title(); ?></h3>
+                <p><?php echo esc_html(get_the_excerpt() ?: wp_trim_words(get_the_content(), 18)); ?></p>
+                <a class="btn btn-dark" href="<?php the_permalink(); ?>">Ver evento</a>
+              </article>
+            <?php endwhile; wp_reset_postdata(); else : ?>
               <div class="card"><h3>Conferência da Família</h3><p>Cadastre seus próximos eventos no painel para exibir aqui automaticamente.</p></div>
               <div class="card"><h3>Vigília de Oração</h3><p>Espaço reservado para agenda dinâmica da igreja.</p></div>
             <?php endif; ?>
@@ -131,21 +110,14 @@ get_header();
         <div>
           <h3>Mensagens recentes</h3>
           <div class="grid">
-            <?php
-            $mensagens = new WP_Query([
-                'post_type' => 'mensagem',
-                'posts_per_page' => 2,
-            ]);
-            if ($mensagens->have_posts()) :
-                while ($mensagens->have_posts()) : $mensagens->the_post(); ?>
-                  <article class="card">
-                    <h3><?php the_title(); ?></h3>
-                    <p><?php echo esc_html(get_the_excerpt() ?: wp_trim_words(get_the_content(), 18)); ?></p>
-                    <a class="btn btn-dark" href="<?php the_permalink(); ?>">Ouvir mensagem</a>
-                  </article>
-                <?php endwhile;
-                wp_reset_postdata();
-            else : ?>
+            <?php $mensagens = new WP_Query(['post_type' => 'mensagem', 'posts_per_page' => 2]);
+            if ($mensagens->have_posts()) : while ($mensagens->have_posts()) : $mensagens->the_post(); ?>
+              <article class="card">
+                <h3><?php the_title(); ?></h3>
+                <p><?php echo esc_html(get_the_excerpt() ?: wp_trim_words(get_the_content(), 18)); ?></p>
+                <a class="btn btn-dark" href="<?php the_permalink(); ?>">Ouvir mensagem</a>
+              </article>
+            <?php endwhile; wp_reset_postdata(); else : ?>
               <div class="card"><h3>Mensagem em destaque</h3><p>Cadastre ministrações para exibir automaticamente nesta área.</p></div>
               <div class="card"><h3>Série atual</h3><p>Espaço para mensagens recentes, sermões e conteúdos edificantes.</p></div>
             <?php endif; ?>
@@ -157,16 +129,28 @@ get_header();
 
   <section class="section section-light">
     <div class="container">
-      <span class="mini-meta">Contribua</span>
-      <h2 class="section-title">Sua oferta fortalece a missão</h2>
-      <p class="section-subtitle">Contribua com dízimos e ofertas para apoiar a obra, os projetos e a expansão do evangelho.</p>
+      <span class="mini-meta">Assista</span>
+      <h2 class="section-title">Transmissão ao vivo</h2>
       <div class="card">
-        <p><strong>Chave PIX:</strong> <?php echo esc_html(iagd_contagem_get_option('church_pix', 'defina a chave PIX no personalizador')); ?></p>
+        <p>Use o botão de transmissão ao vivo no topo ou configure a URL no personalizador.</p>
+        <a class="btn btn-primary" href="<?php echo esc_url(iagd_contagem_get_option('church_live_url', '#')); ?>">Abrir transmissão</a>
       </div>
     </div>
   </section>
 
-  <section id="contato" class="section">
+  <section class="section">
+    <div class="container">
+      <span class="mini-meta">Contribua</span>
+      <h2 class="section-title">Sua oferta fortalece a missão</h2>
+      <p class="section-subtitle"><?php echo wp_kses_post(iagd_contagem_get_option('church_donation_text', 'Contribua com dízimos e ofertas para apoiar a obra, os projetos e a expansão do evangelho.')); ?></p>
+      <div class="card">
+        <p><strong>Chave PIX:</strong> <?php echo esc_html(iagd_contagem_get_option('church_pix', 'defina a chave PIX no personalizador')); ?></p>
+        <a class="btn btn-dark" href="<?php echo esc_url(home_url('/doacoes')); ?>">Página de doações</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato" class="section section-light">
     <div class="container">
       <span class="mini-meta">Contato</span>
       <h2 class="section-title">Venha nos visitar</h2>
@@ -178,14 +162,9 @@ get_header();
           <p><strong>E-mail:</strong> <?php echo esc_html(iagd_contagem_get_option('church_email', 'contato@igreja.com')); ?></p>
           <p><strong>Endereço:</strong> <?php echo esc_html(iagd_contagem_get_option('church_address', 'Contagem - MG')); ?></p>
         </div>
-        <div class="card">
-          <h3>Fale conosco</h3>
-          <form class="form-grid">
-            <input type="text" placeholder="Seu nome">
-            <input type="email" placeholder="Seu e-mail">
-            <textarea placeholder="Escreva sua mensagem"></textarea>
-            <button type="button" class="btn btn-primary">Enviar</button>
-          </form>
+        <div class="card embed-box">
+          <h3>Localização</h3>
+          <?php echo wp_kses_post(iagd_contagem_get_option('church_map_embed', '<p>Adicione o iframe do mapa no personalizador.</p>')); ?>
         </div>
       </div>
     </div>

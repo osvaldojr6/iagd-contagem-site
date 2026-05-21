@@ -5,6 +5,7 @@
       <div>
         <h3><?php bloginfo('name'); ?></h3>
         <p>Igreja Apostólica da Graça Contagem. Uma igreja bíblica, acolhedora e comprometida com adoração, discipulado e serviço.</p>
+        <p><strong>CNPJ:</strong> <?php echo esc_html(iagd_contagem_get_option('church_cnpj', '')); ?></p>
       </div>
       <div>
         <h3>Contato</h3>
@@ -17,6 +18,7 @@
         <h3>Redes e contribuição</h3>
         <p><a href="<?php echo esc_url(iagd_contagem_get_option('church_instagram', '#')); ?>">Instagram</a></p>
         <p><a href="<?php echo esc_url(iagd_contagem_get_option('church_youtube', '#')); ?>">YouTube</a></p>
+        <p><a href="<?php echo esc_url(iagd_contagem_get_option('church_facebook', '#')); ?>">Facebook</a></p>
         <p>PIX: <?php echo esc_html(iagd_contagem_get_option('church_pix', 'cadastre a chave PIX')); ?></p>
       </div>
     </div>
@@ -25,6 +27,10 @@
     </div>
   </div>
 </footer>
+<?php $whatsapp = iagd_contagem_get_option('church_whatsapp', ''); ?>
+<?php if ($whatsapp) : ?>
+  <a class="whatsapp-float" href="https://wa.me/<?php echo esc_attr(preg_replace('/\D+/', '', $whatsapp)); ?>" target="_blank" rel="noopener">WhatsApp</a>
+<?php endif; ?>
 <?php wp_footer(); ?>
 </body>
 </html>
