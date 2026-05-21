@@ -2,18 +2,31 @@
 
 Tema WordPress customizado para a **Igreja Apostólica da Graça Contagem**.
 
-## Últimas melhorias
-- organograma de células com visual mais profissional
-- diferenciação visual por nível hierárquico
-- avatar/foto destacada nas células
-- badge de nível no card
-- melhor leitura em desktop e mobile
+## Conteúdo demo para pré-visualização
+Para facilitar a prévia do tema, o projeto agora inclui:
+- textos demonstrativos na Home
+- imagens placeholder em `assets/img/`
+- estrutura pronta para cadastrar páginas e conteúdos no painel
 
-## Organograma
-A árvore de células suporta vários níveis e usa a hierarquia nativa do WordPress:
-- nível 1: célula pai
-- nível 2: célula filha
-- nível 3: célula neta
-- e assim por diante
+### Imagens placeholder
+- `assets/img/hero-placeholder.jpg`
+- `assets/img/cell-placeholder.jpg`
 
-Se a célula tiver imagem destacada, ela será exibida como avatar no organograma.
+> Substitua esses arquivos por imagens reais JPG com os mesmos nomes para visualização completa.
+
+## Sugestão de conteúdo demo no WordPress
+Crie páginas com estes títulos:
+- Home
+- Quem Somos
+- Cultos
+- Contato
+- Doações
+
+Cadastre alguns conteúdos de exemplo:
+- 3 ministérios
+- 2 eventos
+- 2 mensagens
+- 3 células em hierarquia (pai > filho > neto)
+
+## Dica
+Depois de ativar o tema, vá em **Aparência > Personalizar** e preencha os campos principais para a prévia ficar mais realista.
