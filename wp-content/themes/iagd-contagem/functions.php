@@ -18,8 +18,8 @@ function iagd_contagem_setup() {
 add_action('after_setup_theme', 'iagd_contagem_setup');
 
 function iagd_contagem_assets() {
-    wp_enqueue_style('iagd-contagem-style', get_stylesheet_uri(), [], '4.0.0');
-    wp_enqueue_script('iagd-contagem-script', get_template_directory_uri() . '/assets/js/main.js', [], '4.0.0', true);
+    wp_enqueue_style('iagd-contagem-style', get_stylesheet_uri(), [], '4.1.0');
+    wp_enqueue_script('iagd-contagem-script', get_template_directory_uri() . '/assets/js/main.js', [], '4.1.0', true);
 }
 add_action('wp_enqueue_scripts', 'iagd_contagem_assets');
 
@@ -72,10 +72,7 @@ function iagd_contagem_get_option($key, $default = '') {
 
 function iagd_contagem_register_post_types() {
     register_post_type('ministerio', [
-        'labels' => [
-            'name' => __('Ministérios', 'iagd-contagem'),
-            'singular_name' => __('Ministério', 'iagd-contagem'),
-        ],
+        'labels' => ['name' => __('Ministérios', 'iagd-contagem'), 'singular_name' => __('Ministério', 'iagd-contagem')],
         'public' => true,
         'has_archive' => true,
         'menu_icon' => 'dashicons-groups',
@@ -85,10 +82,7 @@ function iagd_contagem_register_post_types() {
     ]);
 
     register_post_type('evento', [
-        'labels' => [
-            'name' => __('Eventos', 'iagd-contagem'),
-            'singular_name' => __('Evento', 'iagd-contagem'),
-        ],
+        'labels' => ['name' => __('Eventos', 'iagd-contagem'), 'singular_name' => __('Evento', 'iagd-contagem')],
         'public' => true,
         'has_archive' => true,
         'menu_icon' => 'dashicons-calendar-alt',
@@ -98,10 +92,7 @@ function iagd_contagem_register_post_types() {
     ]);
 
     register_post_type('mensagem', [
-        'labels' => [
-            'name' => __('Mensagens', 'iagd-contagem'),
-            'singular_name' => __('Mensagem', 'iagd-contagem'),
-        ],
+        'labels' => ['name' => __('Mensagens', 'iagd-contagem'), 'singular_name' => __('Mensagem', 'iagd-contagem')],
         'public' => true,
         'has_archive' => true,
         'menu_icon' => 'dashicons-format-audio',
@@ -111,10 +102,7 @@ function iagd_contagem_register_post_types() {
     ]);
 
     register_post_type('celula', [
-        'labels' => [
-            'name' => __('Células', 'iagd-contagem'),
-            'singular_name' => __('Célula', 'iagd-contagem'),
-        ],
+        'labels' => ['name' => __('Células', 'iagd-contagem'), 'singular_name' => __('Célula', 'iagd-contagem')],
         'public' => true,
         'has_archive' => true,
         'menu_icon' => 'dashicons-networking',
@@ -209,7 +197,7 @@ function iagd_contagem_save_meta($post_id) {
 }
 add_action('save_post', 'iagd_contagem_save_meta');
 
-function iagd_contagem_render_celula_tree($parent_id = 0) {
+function iagd_contagem_render_celula_tree($parent_id = 0, $level = 0) {
     $items = get_posts([
         'post_type' => 'celula',
         'posts_per_page' => -1,
@@ -222,13 +210,20 @@ function iagd_contagem_render_celula_tree($parent_id = 0) {
         return '';
     }
 
-    $html = '<ul class="org-tree">';
+    $html = '<ul class="org-tree level-' . intval($level) . '">';
     foreach ($items as $item) {
         $leader = get_post_meta($item->ID, '_iagd_celula_lider', true);
         $meeting = get_post_meta($item->ID, '_iagd_celula_encontro', true);
         $address = get_post_meta($item->ID, '_iagd_celula_endereco', true);
+        $thumb = get_the_post_thumbnail($item->ID, 'thumbnail', ['class' => 'org-avatar']);
         $html .= '<li>';
-        $html .= '<div class="org-card">';
+        $html .= '<div class="org-card level-' . intval($level) . '">';
+        $html .= '<span class="org-badge">Nível ' . intval($level + 1) . '</span>';
+        if ($thumb) {
+            $html .= $thumb;
+        } else {
+            $html .= '<div class="org-avatar org-avatar-placeholder">C</div>';
+        }
         $html .= '<h3>' . esc_html(get_the_title($item)) . '</h3>';
         if ($leader) {
             $html .= '<p><strong>Líder:</strong> ' . esc_html($leader) . '</p>';
@@ -241,7 +236,7 @@ function iagd_contagem_render_celula_tree($parent_id = 0) {
         }
         $html .= '<p><a class="btn btn-dark" href="' . esc_url(get_permalink($item)) . '">Ver célula</a></p>';
         $html .= '</div>';
-        $html .= iagd_contagem_render_celula_tree($item->ID);
+        $html .= iagd_contagem_render_celula_tree($item->ID, $level + 1);
         $html .= '</li>';
     }
     $html .= '</ul>';
